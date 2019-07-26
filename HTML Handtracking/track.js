@@ -6,8 +6,13 @@ let updateNote = document.getElementById("updatenote");
 let isVideo = false;
 let model = null;
 
-var item = document.getElementById("moveItem");
-item.style.position = "absolute";
+var moveCanvas = document.getElementById("movecanvas");
+moveCanvas.style.position = "fixed";
+var ctx = moveCanvas.getContext("2d");
+
+moveCanvas.width = window.innerWidth;
+moveCanvas.height = window.innerHeight;
+
 //var itemRect = item.getBoundingClientRect();
 
 const modelParams = {
@@ -48,19 +53,37 @@ function runDetection() {
         model.renderPredictions(predictions, canvas, context, video);
         if (predictions[0]) {
             let midvalX = predictions[0].bbox[0] + (predictions[0].bbox[2] / 2)
-            gamex = window.innerWidth * (midvalX / video.width)
+            gamex = moveCanvas.width * (midvalX / video.width)
             console.log(midvalX);
             console.log('Predictions: ', gamex);
             let midvalY = predictions[0].bbox[1] + (predictions[0].bbox[3] / 2)
-            gamey = window.innerHeight * (midvalY / video.height)
+            gamey = moveCanvas.height * (midvalY / video.height)
             console.log(midvalY);
             console.log('Predictions: ', gamey);
-            let x = gamex
-            let y = gamey
-            item.style.right = -x + "px";
-            item.style.bottom = -y + "px";
-            item.style.left = x + "px";
-            item.style.top = y + "px";
+
+            let x = gamex;
+            let y = gamey;
+
+            draw();
+
+            function drawBall() {
+                ctx.beginPath();
+                ctx.arc(x, y, 10, 0, Math.PI*2);
+                ctx.fillStyle = "#0095DD";
+                ctx.fill();
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, moveCanvas.width, moveCanvas.height);
+                drawBall();
+
+            }
+
+            //setInterval(draw, 10);
+            //item.style.right = -x + "px";
+            //item.style.bottom = -y + "px";
+            //item.style.left = x + "px";
+            //item.style.top = y + "px";
 
         }
         if (isVideo) {
