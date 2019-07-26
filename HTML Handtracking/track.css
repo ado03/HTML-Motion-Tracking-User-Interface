@@ -19,6 +19,10 @@ body {
 
 }
 
+#movecanvas{
+  z-index: -1
+}
+
 canvas {
   position: fixed;
   left: 20px;
