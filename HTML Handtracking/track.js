@@ -13,6 +13,19 @@ var ctx = moveCanvas.getContext("2d");
 moveCanvas.width = window.innerWidth;
 moveCanvas.height = window.innerHeight;
 
+var curleft = 0;
+var curtop = 0;
+var curright;
+var curbott;
+
+var gamex;
+var gamey;
+var x;
+var y;
+
+//let elem = document.getElementById("mybutton");
+//var elemRect = elem.getBoundingClientRect();
+
 //var itemRect = item.getBoundingClientRect();
 
 const modelParams = {
@@ -61,38 +74,40 @@ function runDetection() {
       console.log(midvalY);
       console.log('Predictions: ', gamey);
 
-      let x = gamex;
-      let y = gamey;
-
       draw();
-      function drawBall() {
-        ctx.beginPath();
-        ctx.arc(x, y, 10, 0, Math.PI*2);
-        ctx.fillStyle = "rgba(255,51,51,0.5)";
-        ctx.fill();
-      }
-      function draw() {
-        ctx.clearRect(0, 0, moveCanvas.width, moveCanvas.height);
-        drawBall();
-      }
-
-      if (y > 500){
-        stopScroll();
-        startScrollDown();
-      }
-      else if (y < 80){
-        stopScroll();
-        startScrollUp();
-      }
-      else if (80 <= y <= 500){
-        stopScroll();
-      };
+      scrolling();
     }
-    
     if (isVideo) {
       requestAnimationFrame(runDetection);
     }
   });
+}
+
+function drawBall() {
+  let x = gamex;
+  let y = gamey;
+  ctx.beginPath();
+  ctx.arc(x, y, 10, 0, Math.PI*2);
+  ctx.fillStyle = "rgba(243,201,201,1)";
+  ctx.fill();
+}
+function draw() {
+  ctx.clearRect(0, 0, moveCanvas.width, moveCanvas.height);
+  drawBall();
+}
+
+function scrolling() {
+  if (gamey > 500){
+    stopScroll();
+    startScrollDown();
+  }
+  else if (gamey < 80){
+    stopScroll();
+    startScrollUp();
+  }
+  else if (80 <= gamey <= 500){
+    stopScroll();
+  };
 }
 
 function startScrollDown() {
@@ -106,6 +121,23 @@ function stopScroll() {
 function startScrollUp() {
   scroll = setInterval(function(){ window.scrollBy(0, -10); console.log('start');}, 0.01);
 }
+
+function findPos() {
+  let elem = document.getElementById("mybutton");
+  let elemWidth = elem.style.width
+  let elemHeight = elem.style.height
+
+  if (elem.offsetParent) {
+    do {
+        curleft += elem.offsetLeft;
+        curtop += elem.offsetTop;
+        curright = window.innerWidth - (elem.offsetLeft + elemWidth);
+        curbott = window.innerHeight - (elem.offsetTop + elemHeight);
+    } while (elem = elem.offsetParent);
+    console.log('Left: ' + curleft, 'Top: ' + curtop, 'Right: ' + curright, 'Bottom: ' + curbott);
+  }
+}
+
 // Load the model.
 handTrack.load(modelParams).then(lmodel => {
     // detect objects in the image.
@@ -113,5 +145,6 @@ handTrack.load(modelParams).then(lmodel => {
     updateNote.innerText = "Loaded Model!"
     if (updateNote = "Loaded Model") {
       toggleVideo();
+      findPos();
     };
 });
