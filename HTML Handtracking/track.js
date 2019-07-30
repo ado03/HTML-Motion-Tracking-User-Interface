@@ -34,7 +34,7 @@ const modelParams = {
     flipHorizontal: true,   // flip e.g for video
     maxNumBoxes: 1,        // maximum number of boxes to detect
     iouThreshold: 0.5,      // ioU threshold for non-max suppression
-    scoreThreshold: 0.6,    // confidence threshold for predictions.
+    scoreThreshold: 0.75,    // confidence threshold for predictions.
 }
 
 function startVideo() {
@@ -99,15 +99,15 @@ function draw() {
 }
 
 function scrolling() {
-  if (mousey > 500){
+  if (mousey > 570){
     stopScroll();
     startScrollDown();
   }
-  else if (mousey < 130){
+  else if (mousey < 150){
     stopScroll();
     startScrollUp();
   }
-  else if (130 <= mousey <= 500){
+  else if (150 <= mousey <= 570){
     stopScroll();
   };
 }
@@ -139,6 +139,9 @@ function findPos() {
     console.log('Left: ' + curleft, 'Top: ' + curtop, 'Right: ' + curright, 'Bottom: ' + curbott);
   }
 }
+
+
+
 
 // Load the model.
 handTrack.load(modelParams).then(lmodel => {
