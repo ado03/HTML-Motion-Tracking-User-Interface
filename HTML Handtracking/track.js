@@ -18,10 +18,12 @@ var curtop = 0;
 var curright;
 var curbott;
 
-var gamex;
-var gamey;
+var mousex;
+var mousey;
 var x;
 var y;
+var dotx;
+var doty;
 
 //let elem = document.getElementById("mybutton");
 //var elemRect = elem.getBoundingClientRect();
@@ -66,13 +68,13 @@ function runDetection() {
     model.renderPredictions(predictions, canvas, context, video);
     if (predictions[0]) {
       let midvalX = predictions[0].bbox[0] + (predictions[0].bbox[2] / 2)
-      gamex = moveCanvas.width * (midvalX / video.width)
+      mousex = moveCanvas.width * (midvalX / video.width)
       console.log(midvalX);
-      console.log('Predictions: ', gamex);
+      console.log('Predictions: ', mousex);
       let midvalY = predictions[0].bbox[1] + (predictions[0].bbox[3] / 2)
-      gamey = moveCanvas.height * (midvalY / video.height)
+      mousey = moveCanvas.height * (midvalY / video.height)
       console.log(midvalY);
-      console.log('Predictions: ', gamey);
+      console.log('Predictions: ', mousey);
 
       draw();
       scrolling();
@@ -84,8 +86,8 @@ function runDetection() {
 }
 
 function drawBall() {
-  let x = gamex;
-  let y = gamey;
+  let x = mousex;
+  let y = mousey;
   ctx.beginPath();
   ctx.arc(x, y, 10, 0, Math.PI*2);
   ctx.fillStyle = "rgba(243,201,201,1)";
@@ -97,15 +99,15 @@ function draw() {
 }
 
 function scrolling() {
-  if (gamey > 500){
+  if (mousey > 500){
     stopScroll();
     startScrollDown();
   }
-  else if (gamey < 80){
+  else if (mousey < 80){
     stopScroll();
     startScrollUp();
   }
-  else if (80 <= gamey <= 500){
+  else if (80 <= mousey <= 500){
     stopScroll();
   };
 }
