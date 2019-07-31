@@ -37,7 +37,7 @@ const modelParams = {
     flipHorizontal: true,   // flip e.g for video
     maxNumBoxes: 1,        // maximum number of boxes to detect
     iouThreshold: 0.5,      // ioU threshold for non-max suppression
-    scoreThreshold: 0.75,    // confidence threshold for predictions.
+    scoreThreshold: 0.70,    // confidence threshold for predictions.
 }
 
 function startVideo() {
@@ -231,11 +231,11 @@ function scrolling() {
     stopScroll();
     startScrollDown();
   }
-  else if (mousey < 190){
+  else if (mousey < 200){
     stopScroll();
     startScrollUp();
   }
-  else if (190 <= mousey <= 530){
+  else if (200 <= mousey <= 530){
     stopScroll();
   };
 }
