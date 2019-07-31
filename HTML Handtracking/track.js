@@ -103,11 +103,11 @@ function scrolling() {
     stopScroll();
     startScrollDown();
   }
-  else if (mousey < 150){
+  else if (mousey < 190){
     stopScroll();
     startScrollUp();
   }
-  else if (150 <= mousey <= 570){
+  else if (190 <= mousey <= 570){
     stopScroll();
   };
 }
