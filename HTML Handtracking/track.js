@@ -13,10 +13,10 @@ var ctx = moveCanvas.getContext("2d");
 moveCanvas.width = window.innerWidth;
 moveCanvas.height = window.innerHeight;
 
-var curleft = 0;
-var curtop = 0;
-var curright;
-var curbott;
+//var curleft = 0;
+//var curtop = 0;
+//var curright = 0;
+//var curbott = 0;
 
 var mousex;
 var mousey;
@@ -24,6 +24,9 @@ var x;
 var y;
 var dotx;
 var doty;
+
+var click;
+var elementMouseIsOver;
 
 //let elem = document.getElementById("mybutton");
 //var elemRect = elem.getBoundingClientRect();
@@ -69,21 +72,146 @@ function runDetection() {
     if (predictions[0]) {
       let midvalX = predictions[0].bbox[0] + (predictions[0].bbox[2] / 2)
       mousex = moveCanvas.width * (midvalX / video.width)
+      dotx = (mousex/document.body.clientWidth) * document.body.clientWidth
+      console.log('dotx: ', dotx);
       console.log(midvalX);
       console.log('Predictions: ', mousex);
       let midvalY = predictions[0].bbox[1] + (predictions[0].bbox[3] / 2)
       mousey = moveCanvas.height * (midvalY / video.height)
+      doty = (mousey/document.body.clientHeight) * document.body.clientHeight
+      console.log('doty: ', doty);
       console.log(midvalY);
       console.log('Predictions: ', mousey);
 
       draw();
+      mouseOverBehaviour();
       scrolling();
+      //tapping();
     }
     if (isVideo) {
       requestAnimationFrame(runDetection);
     }
   });
 }
+
+/*function simulate(element, eventName)
+{
+    var options = extend(defaultOptions, arguments[2] || {});
+    var oEvent, eventType = null;
+
+    for (var name in eventMatchers)
+    {
+        if (eventMatchers[name].test(eventName)) { eventType = name; break; }
+    }
+
+    if (!eventType)
+        throw new SyntaxError('Only HTMLEvents and MouseEvents interfaces are supported');
+
+    if (document.createEvent)
+    {
+        oEvent = document.createEvent(eventType);
+        if (eventType == 'HTMLEvents')
+        {
+            oEvent.initEvent(eventName, options.bubbles, options.cancelable);
+        }
+        else
+        {
+            oEvent.initMouseEvent(eventName, options.bubbles, options.cancelable, document.defaultView,
+            options.button, options.pointerX, options.pointerY, options.pointerX, options.pointerY,
+            options.ctrlKey, options.altKey, options.shiftKey, options.metaKey, options.button, element);
+        }
+        element.dispatchEvent(oEvent);
+    }
+    else
+    {
+        options.clientX = options.pointerX;
+        options.clientY = options.pointerY;
+        var evt = document.createEventObject();
+        oEvent = extend(evt, options);
+        element.fireEvent('on' + eventName, oEvent);
+    }
+    return element;
+}
+*/
+function simulateMouseover() {
+  var event = new MouseEvent('mouseover', {
+    'view': window,
+    'bubbles': true,
+    'cancelable': true
+  });
+  let elementMouseIsOver = document.elementFromPoint(dotx, doty);
+  //var myTarget = document.getElementById('target_div');
+  var canceled = !elementMouseIsOver.dispatchEvent(event);
+  if (canceled) {
+    // A handler called preventDefault.
+    console.log("canceled");
+  } else {
+    // None of the handlers called preventDefault.
+    console.log("not canceled");
+  }
+}
+
+function mouseOverBehaviour() {
+    let elementMouseIsOver = document.elementFromPoint(dotx, doty);
+    var counter = 0;
+    //for (counter = 0; counter < 1; counter ++){
+    //  let elementMouse = elementMouseIsOver;
+    //}
+    //myElement = document.getElementById("target_div");
+     // attach mouseover event listener to element
+    elementMouseIsOver.addEventListener("mouseover", function(event) {
+        // change the color of the font
+        if (elementMouseIsOver.tagName == 'BUTTON'){
+          elementMouseIsOver.click();
+        }
+        //let elementMouse = elementMouseIsOver;
+    });
+    // call the simulation
+    setTimeout(simulateMouseover,3000);
+}
+
+/*function extend(destination, source) {
+    for (var property in source)
+      destination[property] = source[property];
+    return destination;
+}
+
+var eventMatchers = {
+    'HTMLEvents': /^(?:load|unload|abort|error|select|change|submit|reset|focus|blur|resize|scroll)$/,
+    'MouseEvents': /^(?:click|dblclick|mouse(?:down|up|over|move|out))$/
+}
+var defaultOptions = {
+    pointerX: 0,
+    pointerY: 0,
+    button: 0,
+    ctrlKey: false,
+    altKey: false,
+    shiftKey: false,
+    metaKey: false,
+    bubbles: true,
+    cancelable: true
+}*/
+
+/*function tapping(){
+  console.log(curleft, mousex, curright);
+  console.log(curtop, mousey, curbott);
+  if (curleft < mousex < curright && curtop < mousey < curbott) {
+    //startClick();
+    console.log('clicked');
+  }
+  else {
+    return;
+  }
+}
+
+function startClick() {
+  click = setTimeout(document.getElementById("mybutton").click(), 5000);
+}
+
+function stopClick() {
+  click = setInterval(function(){console.log('')}, 1);
+  clearInterval(click);
+}*/
 
 function drawBall() {
   let x = mousex;
@@ -103,11 +231,11 @@ function scrolling() {
     stopScroll();
     startScrollDown();
   }
-  else if (mousey < 80){
+  else if (mousey < 130){
     stopScroll();
     startScrollUp();
   }
-  else if (80 <= mousey <= 500){
+  else if (130 <= mousey <= 500){
     stopScroll();
   };
 }
@@ -124,21 +252,25 @@ function startScrollUp() {
   scroll = setInterval(function(){ window.scrollBy(0, -10); console.log('start');}, 0.01);
 }
 
-function findPos() {
+/*function findPos() {
   let elem = document.getElementById("mybutton");
-  let elemWidth = elem.style.width
-  let elemHeight = elem.style.height
+  let elemWidth = elem.offsetWidth;
+  let elemHeight = elem.offsetHeight;
+  console.log(elemWidth);
+  console.log(elemHeight);
 
-  if (elem.offsetParent) {
-    do {
+  //if (elem.offsetParent) {
+    //do {
         curleft += elem.offsetLeft;
         curtop += elem.offsetTop;
-        curright = window.innerWidth - (elem.offsetLeft + elemWidth);
-        curbott = window.innerHeight - (elem.offsetTop + elemHeight);
-    } while (elem = elem.offsetParent);
+        curright += curleft;
+        curright += elemWidth;
+        curbott += curtop;
+        curbott += elemHeight;
+    //} while (elem = elem.offsetParent);
     console.log('Left: ' + curleft, 'Top: ' + curtop, 'Right: ' + curright, 'Bottom: ' + curbott);
-  }
-}
+  //}
+}*/
 
 // Load the model.
 handTrack.load(modelParams).then(lmodel => {
@@ -146,7 +278,7 @@ handTrack.load(modelParams).then(lmodel => {
     model = lmodel
     updateNote.innerText = "Loaded Model!"
     if (updateNote = "Loaded Model") {
+      //findPos();
       toggleVideo();
-      findPos();
     };
 });
