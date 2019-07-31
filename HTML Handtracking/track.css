@@ -38,6 +38,7 @@ body {
 }
 
 #movecanvas{
+  z-index: -1
 }
 
 canvas {
