@@ -90,7 +90,7 @@ function drawBall() {
   let y = mousey;
   ctx.beginPath();
   ctx.arc(x, y, 10, 0, Math.PI*2);
-  ctx.fillStyle = "rgba(243,201,201,1)";
+  ctx.fillStyle = "rgba(255, 0, 0, 0.6)";
   ctx.fill();
 }
 function draw() {
