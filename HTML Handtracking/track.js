@@ -1,3 +1,6 @@
+//ALL the Variables
+
+//Videobox (Webcam)
 const video = document.getElementById("myvideo");
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
@@ -6,6 +9,7 @@ let updateNote = document.getElementById("updatenote");
 let isVideo = false;
 let model = null;
 
+//Cursor's Canvas
 var moveCanvas = document.getElementById("movecanvas");
 moveCanvas.style.position = "fixed";
 var ctx = moveCanvas.getContext("2d");
@@ -13,11 +17,7 @@ var ctx = moveCanvas.getContext("2d");
 moveCanvas.width = window.innerWidth;
 moveCanvas.height = window.innerHeight;
 
-//var curleft = 0;
-//var curtop = 0;
-//var curright = 0;
-//var curbott = 0;
-
+//Cursor
 var mousex;
 var mousey;
 var x;
@@ -25,21 +25,17 @@ var y;
 var dotx;
 var doty;
 
-var click;
 var elementMouseIsOver;
 
-//let elem = document.getElementById("mybutton");
-//var elemRect = elem.getBoundingClientRect();
-
-//var itemRect = item.getBoundingClientRect();
-
+//Detection Parameters
 const modelParams = {
     flipHorizontal: true,   // flip e.g for video
     maxNumBoxes: 1,        // maximum number of boxes to detect
     iouThreshold: 0.5,      // ioU threshold for non-max suppression
-    scoreThreshold: 0.70,    // confidence threshold for predictions.
+    scoreThreshold: 0.8,    // confidence threshold for predictions.
 }
 
+//Starting Webcam Stream
 function startVideo() {
     handTrack.startVideo(video).then(function (status) {
         console.log("video started", status);
@@ -65,6 +61,7 @@ function toggleVideo() {
     }
 }
 
+//Detecting the Hands
 function runDetection() {
   model.detect(video).then(predictions => {
     console.log("Predictions: ", predictions);
@@ -86,7 +83,6 @@ function runDetection() {
       draw();
       mouseOverBehaviour();
       scrolling();
-      //tapping();
     }
     if (isVideo) {
       requestAnimationFrame(runDetection);
@@ -94,45 +90,7 @@ function runDetection() {
   });
 }
 
-/*function simulate(element, eventName)
-{
-    var options = extend(defaultOptions, arguments[2] || {});
-    var oEvent, eventType = null;
-
-    for (var name in eventMatchers)
-    {
-        if (eventMatchers[name].test(eventName)) { eventType = name; break; }
-    }
-
-    if (!eventType)
-        throw new SyntaxError('Only HTMLEvents and MouseEvents interfaces are supported');
-
-    if (document.createEvent)
-    {
-        oEvent = document.createEvent(eventType);
-        if (eventType == 'HTMLEvents')
-        {
-            oEvent.initEvent(eventName, options.bubbles, options.cancelable);
-        }
-        else
-        {
-            oEvent.initMouseEvent(eventName, options.bubbles, options.cancelable, document.defaultView,
-            options.button, options.pointerX, options.pointerY, options.pointerX, options.pointerY,
-            options.ctrlKey, options.altKey, options.shiftKey, options.metaKey, options.button, element);
-        }
-        element.dispatchEvent(oEvent);
-    }
-    else
-    {
-        options.clientX = options.pointerX;
-        options.clientY = options.pointerY;
-        var evt = document.createEventObject();
-        oEvent = extend(evt, options);
-        element.fireEvent('on' + eventName, oEvent);
-    }
-    return element;
-}
-*/
+//Clicking
 function simulateMouseover() {
   var event = new MouseEvent('mouseover', {
     'view': window,
@@ -140,7 +98,6 @@ function simulateMouseover() {
     'cancelable': true
   });
   let elementMouseIsOver = document.elementFromPoint(dotx, doty);
-  //var myTarget = document.getElementById('target_div');
   var canceled = !elementMouseIsOver.dispatchEvent(event);
   if (canceled) {
     // A handler called preventDefault.
@@ -154,65 +111,19 @@ function simulateMouseover() {
 function mouseOverBehaviour() {
     let elementMouseIsOver = document.elementFromPoint(dotx, doty);
     var counter = 0;
-    //for (counter = 0; counter < 1; counter ++){
-    //  let elementMouse = elementMouseIsOver;
-    //}
-    //myElement = document.getElementById("target_div");
      // attach mouseover event listener to element
     elementMouseIsOver.addEventListener("mouseover", function(event) {
         // change the color of the font
         if (elementMouseIsOver.tagName == 'BUTTON'){
-          elementMouseIsOver.click();
+          elementMouseIsOver.style.color = "rgba(121, 134, 203, 0.5)";
+          setTimeout(elementMouseIsOver.click(), 10000);
         }
-        //let elementMouse = elementMouseIsOver;
     });
     // call the simulation
     setTimeout(simulateMouseover,3000);
 }
 
-/*function extend(destination, source) {
-    for (var property in source)
-      destination[property] = source[property];
-    return destination;
-}
-
-var eventMatchers = {
-    'HTMLEvents': /^(?:load|unload|abort|error|select|change|submit|reset|focus|blur|resize|scroll)$/,
-    'MouseEvents': /^(?:click|dblclick|mouse(?:down|up|over|move|out))$/
-}
-var defaultOptions = {
-    pointerX: 0,
-    pointerY: 0,
-    button: 0,
-    ctrlKey: false,
-    altKey: false,
-    shiftKey: false,
-    metaKey: false,
-    bubbles: true,
-    cancelable: true
-}*/
-
-/*function tapping(){
-  console.log(curleft, mousex, curright);
-  console.log(curtop, mousey, curbott);
-  if (curleft < mousex < curright && curtop < mousey < curbott) {
-    //startClick();
-    console.log('clicked');
-  }
-  else {
-    return;
-  }
-}
-
-function startClick() {
-  click = setTimeout(document.getElementById("mybutton").click(), 5000);
-}
-
-function stopClick() {
-  click = setInterval(function(){console.log('')}, 1);
-  clearInterval(click);
-}*/
-
+//Creating the Cursor
 function drawBall() {
   let x = mousex;
   let y = mousey;
@@ -226,6 +137,7 @@ function draw() {
   drawBall();
 }
 
+//Scrolling Functions
 function scrolling() {
   if (mousey > 530){
     stopScroll();
@@ -252,36 +164,14 @@ function startScrollUp() {
   scroll = setInterval(function(){ window.scrollBy(0, -10); console.log('start');}, 0.01);
 }
 
-/*function findPos() {
-  let elem = document.getElementById("mybutton");
-  let elemWidth = elem.offsetWidth;
-  let elemHeight = elem.offsetHeight;
-  console.log(elemWidth);
-  console.log(elemHeight);
-
-  //if (elem.offsetParent) {
-    //do {
-        curleft += elem.offsetLeft;
-        curtop += elem.offsetTop;
-        curright += curleft;
-        curright += elemWidth;
-        curbott += curtop;
-        curbott += elemHeight;
-    //} while (elem = elem.offsetParent);
-    console.log('Left: ' + curleft, 'Top: ' + curtop, 'Right: ' + curright, 'Bottom: ' + curbott);
-  //}
-}*/
-
-
-
-
 // Load the model.
 handTrack.load(modelParams).then(lmodel => {
     // detect objects in the image.
     model = lmodel
     updateNote.innerText = "Loaded Model!"
     if (updateNote = "Loaded Model") {
-      //findPos();
+      alert("Nagivate the interface through hand movements. \nThe red dot follows the user's hand movement in real time. \n\n   To Scroll: Move dot towards top/bottom of screen \n   To Click: Hover over button \n \nIf the dot cannot reach edges of window, try moving further away from camera");
+
       toggleVideo();
     };
 });
