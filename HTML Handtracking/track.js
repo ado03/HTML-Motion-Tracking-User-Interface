@@ -227,7 +227,7 @@ function draw() {
 }
 
 function scrolling() {
-  if (mousey > 570){
+  if (mousey > 530){
     stopScroll();
     startScrollDown();
   }
@@ -235,7 +235,7 @@ function scrolling() {
     stopScroll();
     startScrollUp();
   }
-  else if (190 <= mousey <= 570){
+  else if (190 <= mousey <= 530){
     stopScroll();
   };
 }
