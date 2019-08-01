@@ -35,9 +35,9 @@ var block = {
 }
 
 // ball variables
-var ballWidth = 15;
-var ballHeight = 15;
-var totalballs = 15;
+var ballWidth = 40;
+var ballHeight = 40;
+var totalballs = 7;
 var balls = [];
 for (var i = 0; i < totalballs; i++) {
     addball();
