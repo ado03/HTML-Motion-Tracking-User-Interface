@@ -1,0 +1,67 @@
+
+
+#movecanvas{
+  z-index: -1;
+  position: fixed;
+  left: 300px;
+  background: #ffffff;
+  border-radius: 3px;
+}
+body {
+    padding: 20px;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.p20 {
+    padding: 20px;
+}
+
+.canvasbox {
+    border-radius: 3px;
+    margin-right: 10px;
+    width: 240px;
+    height: 180px;
+    border-bottom: 0px solid #0063FF;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0), 0 4px 10px 0 #00000030;
+  background: #333;
+}
+
+.button {
+  background-color: #7986CB;
+  border: 2px solid #7986CB;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+.button:hover {
+  background-color: white;
+  color: black;
+  border: 2px solid #DAE9E4;
+}
+
+canvas {
+  position: fixed;
+  left: 20px;
+  bottom:20px;
+}
+video {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: -1;
+}
+
+.mb10 {
+    margin-bottom: 10px
+}
+
+.mt10 {
+    margin-top: 10px
+}
