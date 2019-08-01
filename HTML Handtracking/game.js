@@ -35,9 +35,9 @@ var block = {
 }
 
 // ball variables
-var ballWidth = 15;
-var ballHeight = 15;
-var totalballs = 15;
+var ballWidth = 40;
+var ballHeight = 40;
+var totalballs = 7;
 var balls = [];
 for (var i = 0; i < totalballs; i++) {
     addball();
@@ -175,7 +175,7 @@ function drawAll() {
     // draw the score
     ctx.font = "20px Arial";
     ctx.fillStyle = "black";
-    ctx.fillText("HITS REMAINING: " + score, 80, 55);
+    ctx.fillText("LIVES REMAINING: " + score, 80, 55);
     if(score == 0) {
       continueAnimating = false;
       ctx.font = "48px Arial";
