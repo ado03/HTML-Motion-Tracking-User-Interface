@@ -145,7 +145,7 @@ function drawAll() {
         height: blockHeight,
     }
     ctx.beginPath();
-    ctx.fillStyle = "rgba(243,201,201,1)";
+    ctx.fillStyle = "rgba(255, 0, 0, 0.6)";
     ctx.fillRect(block.x, block.y, block.width, block.height);
 
     // draw all balls
@@ -175,7 +175,7 @@ function drawAll() {
     // draw the score
     ctx.font = "20px Arial";
     ctx.fillStyle = "black";
-    ctx.fillText("LIVES REMAINING: " + score, 80, 55);
+    ctx.fillText("HITS REMAINING: " + score, 80, 55);
     if(score == 0) {
       continueAnimating = false;
       ctx.font = "48px Arial";
@@ -190,7 +190,7 @@ handTrack.load(modelParams).then(lmodel => {
     model = lmodel
     updateNote.innerText = "Loaded Model!"
     if (updateNote = "Loaded Model") {
-      alert("This is a hand controlled game! \nThe red block follows the user's hand movement in real time and will pause if hand can not be identifed or is out of frame \n\nDodge the falling cubes and see how long you can last...get hit by three and it's game over!\n\nTo restart the game, refresh the page.");
+      alert("This is a hand controlled game! \nThe red block follows the user's hand movement in real time and will pause if hand can not be identifed or is out of frame \n\nDodge the falling cubes and see how long you can last...get hit by three and it's game over!\n\nTo restart the game, click the refresh.");
 
       toggleVideo();
     };
